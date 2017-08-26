@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html ng-app="tttApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="icon" href="../FirstPass/icon-new.png" />
+    <link href="Styles/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="Styles/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link href="Styles/style1.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/angular-1.5.8/angular.min.js"></script>
+    <script src="Scripts/tttController.js"></script>
+</head>
+<body class="container" ng-controller="ticTacToeController">
+    <div class="jumbotron text-center">
+        <h1>
+            <span ng-show="!gameOver">Tic Tac Toe</span>
+            <button class="btn btn-warning btn-lg pull-right" ng-click="resetGrid()">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+        </h1>
+        <div ng-show="winner==1 || winner == -1">
+            <span class="heading">
+                <span> Winner: </span>
+                <i ng-show="winner==1" class="fa fa-times"></i>
+                <i ng-show="winner==-1" class="fa fa-circle-o"></i>
+            </span>
+        </div>
+        <div ng-show="gameTied">
+            <h2>
+                <span> Game Tied </span>
+            </h2>
+        </div>
+    </div>
+    <div class="row main-board-wrapper">
+        <div class="choice-panel-wrapper col-md-3 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10">
+            <div class="btn-group col-xs-12 no-padding choice-panel">
+                <label class="radio-label col-md-12 col-xs-6 two-player-label" ng-class="{active: gameType=='vs'}">
+                    <input type="radio"
+                           name="game-type"
+                           autocomplete="off"
+                           value="vs"
+                           ng-model="gameType"
+                           checked />
+                    <i class="fa fa-user fa-2x"></i>
+                    <i class="fa fa-user fa-2x"></i>
+
+                </label>
+                <label class="radio-label col-md-12 col-xs-6 single-player-label" ng-class="{active: gameType=='cpu'}">
+                    <input type="radio"
+                           name="game-type"
+                           autocomplete="off"
+                           value="cpu"
+                           ng-model="gameType" />
+                    <i class="fa fa-laptop fa-2x"></i>
+                    <i class="fa fa-user fa-2x"></i>
+
+                </label>
+            </div>
+
+            <!-- temp -->
+            <!-- Temp ends -->
+
+        </div>
+        <div class="col-md-6 col-sm-8 col-md-offset-0 col-sm-offset-2 col-xs-10 col-xs-offset-1 main-board-inner-wrapper">
+            <div class="main-board col-xs-12"
+                 ng-class="{'circle-hover': current == -1 && !gameOver,'times-hover': current == 1 && !gameOver}">
+                <!--Start: Row one -->
+                <div class="col-xs-4 top-row left-col" ng-click="executeTurn(0)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[0] == 1 || state[0] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[0] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[0] == 1"></i>
+                </div>
+                <div class="col-xs-4 top-row centre-col" ng-click="executeTurn(1)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[1] == 1 || state[1] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[1] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[1] == 1"></i>
+                </div>
+                <div class="col-xs-4 top-row right-col" ng-click="executeTurn(2)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[2] == 1 || state[2] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[2] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[2] == 1"></i>
+                </div>
+                <!--End: Row one-->
+                <!--Start: Row two -->
+                <div class="col-xs-4 mid-row left-col" ng-click="executeTurn(3)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[3] == 1 || state[3] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[3] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[3] == 1"></i>
+                </div>
+                <div class="col-xs-4 mid-row centre-col" ng-click="executeTurn(4)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[4] == 1 || state[4] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[4] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[4] == 1"></i>
+                </div>
+                <div class="col-xs-4 mid-row right-col" ng-click="executeTurn(5)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[5] == 1 || state[5] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[5] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[5] == 1"></i>
+                </div>
+                <!--End: Row two -->
+                <!--Start: Row three -->
+                <div class="col-xs-4 bottom-row left-col" ng-click="executeTurn(6)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[6] == 1 || state[6] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[6] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[6] == 1"></i>
+                </div>
+                <div class="col-xs-4 bottom-row centre-col" ng-click="executeTurn(7)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[7] == 1 || state[7] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[7] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[7] == 1"></i>
+                </div>
+                <div class="col-xs-4 bottom-row right-col" ng-click="executeTurn(8)">
+                    <i class="fa fa-question" aria-hidden="true" ng-hide="state[8] == 1 || state[8] == -1"></i>
+                    <i class="fa fa-circle-o" aria-hidden="true" ng-show="state[8] == -1"></i>
+                    <i class="fa fa-times" aria-hidden="true" ng-show="state[8] == 1"></i>
+                </div>
+                <!--End: Row three -->
+            </div>
+
+        </div>
+        <div class=" current-turn-container col-md-3 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10" ng-show="!gameOver">
+            <div class="current-turn">
+                <div class="current-turn-inner">
+                    <div class="col-md-12 col-xs-10">Current Move</div>
+                    <div class="col-md-12 col-xs-2" ng-show="current == 1"><i class="fa fa-times"></i></div>
+                    <div class="col-md-12 col-xs-2" ng-show="current == -1"><i class="fa fa-circle-o"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
